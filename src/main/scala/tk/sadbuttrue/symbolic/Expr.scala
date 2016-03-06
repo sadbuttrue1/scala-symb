@@ -11,7 +11,7 @@ trait Expr {
     case (Number(0), e) => e
     case (e, Number(0)) => e
     case (Number(n), Number(m)) => Number(n + m)
-    case (Prod(Number(a), Variable(x, _)), Prod(Number(b), Variable(y, _))) if x == y => (Number(a) + Number(b)) * Variable(x)
+    case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) + Number(b)) * Variable(x, xneg)
     case (x, y) => Sum(x, y)
   }
 
@@ -20,13 +20,14 @@ trait Expr {
     case (Number(0), e) => -e
     case (e, Number(0)) => e
     case (Number(n), Number(m)) => Number(n - m)
-    case (Prod(Number(a), Variable(x, _)), Prod(Number(b), Variable(y, _))) if x == y => (Number(a) - Number(b)) * Variable(x)
+    case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) - Number(b)) * Variable(x, xneg)
     case (x, y) => Sub(x, y)
   }
 
   def unary_- : Expr = this match {
     case Number(n) => Number(-n)
     case v: Variable => v.copy(negative = !v.negative)
+    case const: Constant => const.copy(negative = !const.negative)
     case Prod(e1, e2) => -e1 * e2
     case Frac(e1, e2) => -e1 / e2
     case Sum(e1, e2) => -e1 + -e2
@@ -43,6 +44,7 @@ trait Expr {
     case (e, Number(1)) => e
     case (Number(x), Number(y)) => Number(x * y)
     case (Variable(x, neg), Number(y)) => Number(y) * Variable(x, neg)
+    case (Variable(x, neg), Constant(y, yneg)) => Constant(y, yneg) * Variable(x, neg)
     case (x, y) => Prod(x, y)
   }
 
@@ -62,6 +64,7 @@ trait Expr {
 
   def derive(v: Variable): Expr = this match {
     case Number(_) => Number(0)
+    case Constant(_, _) => Number(0)
     case Variable(name, _) => if (name == v.name) Number(1) else Number(0)
     case Sum(e1, e2) => (e1 derive v) + (e2 derive v)
     case Sub(e1, e2) => (e1 derive v) - (e2 derive v)
@@ -77,6 +80,10 @@ object Expr {
   def eval(e: Expr, env: Map[String, Expr] = Map.empty): Double = e match {
     case Number(n) => n
     case Variable(name, neg) => {
+      val value = eval(env(name), env)
+      negative(neg) * value
+    }
+    case Constant(name, neg) => {
       val value = eval(env(name), env)
       negative(neg) * value
     }
@@ -105,6 +112,13 @@ case class Number(x: Double) extends Expr {
 }
 
 case class Variable(name: String, negative: Boolean = false) extends Expr {
+  override def toString = negative match {
+    case true => "-" + name
+    case false => name
+  }
+}
+
+case class Constant(name: String, negative: Boolean = false) extends Expr {
   override def toString = negative match {
     case true => "-" + name
     case false => name
