@@ -1,6 +1,6 @@
 package tk.sadbuttrue.symbolic
 
-import scala.math.pow
+import scala.math._
 
 /**
   * Created by true on 05/03/16.
@@ -31,7 +31,9 @@ trait Expr {
     case Frac(e1, e2) => -e1 / e2
     case Sum(e1, e2) => -e1 + -e2
     case Sub(e1, e2) => e2 - e1
-    case p: Power => p.copy(negetive = !p.negetive)
+    case p: Power => p.copy(negative = !p.negative)
+    case s: Sin => s.copy(negative = !s.negative)
+    case c: Cos => c.copy(negative = !c.negative)
   }
 
   def *(that: Expr): Expr = (this, that) match {
@@ -40,7 +42,7 @@ trait Expr {
     case (_, Number(0)) => Number(0)
     case (e, Number(1)) => e
     case (Number(x), Number(y)) => Number(x * y)
-    case (Variable(x, _), Number(y)) => Number(y) * Variable(x)
+    case (Variable(x, neg), Number(y)) => Number(y) * Variable(x, neg)
     case (x, y) => Prod(x, y)
   }
 
@@ -64,8 +66,10 @@ trait Expr {
     case Sum(e1, e2) => (e1 derive v) + (e2 derive v)
     case Sub(e1, e2) => (e1 derive v) - (e2 derive v)
     case Prod(e1, e2) => (e1 * (e2 derive v)) + (e2 * (e1 derive v))
-    case Power(e, n, _) => if (n == 0d) Number(0) else Number(n) * Power(e, n - 1)
-    case Frac(Number(a), Power(e, n, _)) => Number(-n * a) / Power(e, n + 1)
+    case Power(e, n, neg) => if (n == 0d) Number(0) else Number(n) * Power(e, n - 1, neg) * (e derive v)
+    case Frac(Number(a), Power(e, n, neg)) => Number(-n * a) / Power(e, n + 1, neg) * (e derive v)
+    case Sin(e, neg) => Cos(e, neg) * (e derive v)
+    case Cos(e, neg) => -Sin(e, neg) * (e derive v)
   }
 }
 
@@ -84,6 +88,8 @@ object Expr {
       val value = pow(eval(e, env), n)
       negative(neg) * value
     }
+    case Sin(e, neg) => negative(neg) * sin(eval(e, env))
+    case Cos(e, neg) => negative(neg) * cos(eval(e, env))
   }
 
   private def negative(neg: Boolean) = {
@@ -128,9 +134,23 @@ case class Frac(expr1: Expr, expr2: Expr) extends Expr {
   override def toString = "(" + expr1.toString + ")/(" + expr2.toString + ")"
 }
 
-case class Power(e: Expr, n: Double, negetive: Boolean = false) extends Expr {
-  override def toString = negetive match {
+case class Power(e: Expr, n: Double, negative: Boolean = false) extends Expr {
+  override def toString = negative match {
     case false => e.toString + "^" + n
     case true => "-" + e.toString + "^" + n
+  }
+}
+
+case class Sin(e: Expr, negative: Boolean = false) extends Expr {
+  override def toString = negative match {
+    case false => "sin(" + e.toString + ")"
+    case true => "-" + "sin(" + e.toString + ")"
+  }
+}
+
+case class Cos(e: Expr, negative: Boolean = false) extends Expr {
+  override def toString = negative match {
+    case false => "cos(" + e.toString + ")"
+    case true => "-" + "cos(" + e.toString + ")"
   }
 }
