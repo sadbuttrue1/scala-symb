@@ -63,6 +63,7 @@ trait Expr {
     case (x, Number(y)) => Power(x, y)
   }
 
+//  todo deal with sin and cos (check, that internal expression depends on variable)
   def derive(v: Variable): Expr = this match {
     case Number(_) => Number(0)
     case Constant(_, _) => Number(0)
