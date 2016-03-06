@@ -71,6 +71,7 @@ trait Expr {
     case Prod(e1, e2) => (e1 * (e2 derive v)) + (e2 * (e1 derive v))
     case Power(e, n, neg) => if (n == 0d) Number(0) else Number(n) * Power(e, n - 1, neg) * (e derive v)
     case Frac(Number(a), Power(e, n, neg)) => Number(-n * a) / Power(e, n + 1, neg) * (e derive v)
+    case Frac(e1, e2) => (e1 * Power(e2, -1)) derive v
     case Sin(e, neg) => Cos(e, neg) * (e derive v)
     case Cos(e, neg) => -Sin(e, neg) * (e derive v)
   }
