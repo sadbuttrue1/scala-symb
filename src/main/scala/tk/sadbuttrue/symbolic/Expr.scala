@@ -20,6 +20,7 @@ trait Expr {
     case (Number(0), e) => -e
     case (e, Number(0)) => e
     case (Number(n), Number(m)) => Number(n - m)
+    case (e, Sub(e1, e2)) => e + (-Sub(e1, e2))
     case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) - Number(b)) * Variable(x, xneg)
     case (x, y) => Sub(x, y)
   }
