@@ -9,29 +9,24 @@ import Expr.eval
 class NumberSpec extends WordSpec with Matchers {
   "Number" when {
     "add" should {
-      "two numbers value" in {
+      "9 + 1 = 10" in {
         val n1 = Number(9)
         val n2 = Number(1)
         eval(n1 + n2) shouldEqual 10d
       }
-      "two numbers text" in {
-        val n1 = Number(9)
-        val n2 = Number(1)
-        ((n1 + n2) toString) shouldEqual "10.0"
-      }
     }
     "derive" should {
-      "return 0" in {
+      "return 0 with any variable" in {
         eval(Number(10) derive Variable("x")) shouldEqual 0d
       }
     }
     "negotiate" should {
-      "works with positive" in {
+      "work with positive" in {
         val n = Number(10)
         eval(-n) shouldEqual -10
         eval(-(-n)) shouldEqual 10
       }
-      "works with negative" in {
+      "work with negative" in {
         val n = Number(-10)
         eval(-n) shouldEqual 10
         eval(-(-n)) shouldEqual -10
