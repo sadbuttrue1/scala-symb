@@ -27,6 +27,11 @@ class NumberSpec extends WordSpec with Matchers {
         val n2 = Number(1)
         eval(n1 - n2) shouldEqual 8d
       }
+      "not fail on ordinal numbers" in {
+        val n = Number(10)
+        eval(n - 10) shouldEqual 0d
+        eval(10 - n) shouldEqual 0d
+      }
     }
     "multiply" should {
       "be 0 if multiply on 0" in {
@@ -49,6 +54,11 @@ class NumberSpec extends WordSpec with Matchers {
         val n2 = Number(9)
         eval(n1 * n2) shouldEqual 18d
         n1 * n2 shouldEqual Number(18)
+      }
+      "not fail on ordinal numbers" in {
+        val n = Number(10)
+        eval(n * 10) shouldEqual 100d
+        eval(10 * n) shouldEqual 100d
       }
     }
     "divide" should {
@@ -73,6 +83,11 @@ class NumberSpec extends WordSpec with Matchers {
         val n = Number(1)
         val v = Variable("x")
         v / n shouldEqual v
+      }
+      "not fail on ordinal numbers" in {
+        val n = Number(10)
+        eval(n / 10) shouldEqual 1d
+        eval(10 / n) shouldEqual 1d
       }
     }
     "derive" should {
