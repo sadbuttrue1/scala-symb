@@ -45,6 +45,30 @@ class NumberSpec extends WordSpec with Matchers {
         n1 * n2 shouldEqual Number(18)
       }
     }
+    "divide" should {
+      "be NaN on 0/0" in {
+        val n = Number(0)
+        eval(n / n).isNaN shouldBe true
+      }
+      "be error on /0" in {
+        intercept[RuntimeException] {
+          val n = Number(0)
+          val v = Variable("x")
+          v / n
+        }
+      }
+      "be 0 when 0/anything" in {
+        val n = Number(0)
+        val v = Variable("x")
+        n / v shouldEqual n
+        eval(n / v) shouldEqual 0
+      }
+      "be expression when e/1" in {
+        val n = Number(1)
+        val v = Variable("x")
+        v / n shouldEqual v
+      }
+    }
     "derive" should {
       "return 0 with any variable" in {
         eval(Number(10) derive Variable("x")) shouldEqual 0d
