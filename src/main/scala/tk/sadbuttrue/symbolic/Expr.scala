@@ -1,7 +1,6 @@
 package tk.sadbuttrue.symbolic
 
 import scala.math._
-import java.lang.{Number => JavaNumber}
 
 /**
   * Created by true on 05/03/16.
@@ -14,10 +13,6 @@ trait Expr {
     case (Number(n), Number(m)) => Number(n + m)
     case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) + Number(b)) * Variable(x, xneg)
     case (x: Expr, y: Expr) => Sum(x, y)
-  }
-
-  def +(that: JavaNumber):Expr = (this, that) match {
-    case (e: Expr, n: JavaNumber) => e + Number(n.doubleValue())
   }
 
   def -(that: Expr): Expr = (this, that) match {
@@ -113,6 +108,9 @@ object Expr {
       case true => -1d
     }
   }
+
+  // TODO: Replace with Numeric
+  implicit def doubleToNumber(x: Double): Number = Number(x)
 }
 
 case class Number(x: Double) extends Expr {

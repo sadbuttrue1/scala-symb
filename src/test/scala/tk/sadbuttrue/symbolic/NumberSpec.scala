@@ -2,6 +2,7 @@ package tk.sadbuttrue.symbolic
 
 import org.scalatest._
 import Expr.eval
+import Expr.doubleToNumber
 
 /**
   * Created by true on 06/03/16.
@@ -17,7 +18,7 @@ class NumberSpec extends WordSpec with Matchers {
       "not fail on ordinal numbers" in {
         val n = Number(10)
         eval(n + 10) shouldEqual 20d
-//        eval(10 + n) shouldEqual 20d
+        eval(10 + n) shouldEqual 20d
       }
     }
     "sub" should {
