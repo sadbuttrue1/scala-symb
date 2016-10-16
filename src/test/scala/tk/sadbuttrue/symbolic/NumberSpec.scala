@@ -14,6 +14,11 @@ class NumberSpec extends WordSpec with Matchers {
         val n2 = Number(1)
         eval(n1 + n2) shouldEqual 10d
       }
+      "not fail on ordinal numbers" in {
+        val n = Number(10)
+        eval(n + 10) shouldEqual 20d
+//        eval(10 + n) shouldEqual 20d
+      }
     }
     "sub" should {
       "9 - 1 = 8" in {

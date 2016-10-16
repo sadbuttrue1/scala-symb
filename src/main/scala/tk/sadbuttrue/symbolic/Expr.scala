@@ -6,13 +6,16 @@ import scala.math._
   * Created by true on 05/03/16.
   */
 trait Expr {
-  def +(that: Expr): Expr = (this, that) match {
+  // TODO: Any?
+  def +(that: Any): Expr = (this, that) match {
+    case (n: java.lang.Number, e: Expr) => Number(n.doubleValue()) + e
+    case (e: Expr, n: java.lang.Number) => Number(n.doubleValue()) + e
     case (Number(0), Number(0)) => Number(0)
-    case (Number(0), e) => e
+    case (Number(0), e: Expr) => e
     case (e, Number(0)) => e
     case (Number(n), Number(m)) => Number(n + m)
     case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) + Number(b)) * Variable(x, xneg)
-    case (x, y) => Sum(x, y)
+    case (x: Expr, y: Expr) => Sum(x, y)
   }
 
   def -(that: Expr): Expr = (this, that) match {
@@ -63,7 +66,7 @@ trait Expr {
     case (x, Number(y)) => Power(x, y)
   }
 
-//  todo deal with sin and cos (check, that internal expression depends on variable)
+  //  todo deal with sin and cos (check, that internal expression depends on variable)
   def derive(v: Variable): Expr = this match {
     case Number(_) => Number(0)
     case Constant(_, _) => Number(0)
