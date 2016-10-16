@@ -15,6 +15,13 @@ class NumberSpec extends WordSpec with Matchers {
         eval(n1 + n2) shouldEqual 10d
       }
     }
+    "sub" should {
+      "9 - 1 = 8" in {
+        val n1 = Number(9)
+        val n2 = Number(1)
+        eval(n1 - n2) shouldEqual 8d
+      }
+    }
     "derive" should {
       "return 0 with any variable" in {
         eval(Number(10) derive Variable("x")) shouldEqual 0d
