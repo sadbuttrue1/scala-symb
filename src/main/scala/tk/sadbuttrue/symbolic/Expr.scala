@@ -1,21 +1,23 @@
 package tk.sadbuttrue.symbolic
 
 import scala.math._
+import java.lang.{Number => JavaNumber}
 
 /**
   * Created by true on 05/03/16.
   */
 trait Expr {
-  // TODO: Any?
-  def +(that: Any): Expr = (this, that) match {
-    case (n: java.lang.Number, e: Expr) => Number(n.doubleValue()) + e
-    case (e: Expr, n: java.lang.Number) => Number(n.doubleValue()) + e
+  def +(that: Expr): Expr = (this, that) match {
     case (Number(0), Number(0)) => Number(0)
     case (Number(0), e: Expr) => e
     case (e, Number(0)) => e
     case (Number(n), Number(m)) => Number(n + m)
     case (Prod(Number(a), Variable(x, xneg)), Prod(Number(b), Variable(y, yneg))) if x == y && xneg == yneg => (Number(a) + Number(b)) * Variable(x, xneg)
     case (x: Expr, y: Expr) => Sum(x, y)
+  }
+
+  def +(that: JavaNumber):Expr = (this, that) match {
+    case (e: Expr, n: JavaNumber) => e + Number(n.doubleValue())
   }
 
   def -(that: Expr): Expr = (this, that) match {
