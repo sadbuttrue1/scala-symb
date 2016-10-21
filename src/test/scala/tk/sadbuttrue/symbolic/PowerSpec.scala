@@ -23,5 +23,13 @@ class PowerSpec extends WordSpec with Matchers {
         eval(Number(0) ^ 0).isNaN shouldBe true
       }
     }
+    "toString" should {
+      "be correct with positive" in {
+        (Variable("x") ^ Number(10)).toString shouldEqual Variable("x").toString + "^" + 10d.toString
+      }
+      "be correct with negative" in {
+        (-(Variable("x") ^ Number(10))).toString shouldEqual "-" + Variable("x").toString + "^" + 10d.toString
+      }
+    }
   }
 }

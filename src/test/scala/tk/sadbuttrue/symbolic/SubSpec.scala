@@ -50,5 +50,10 @@ class SubSpec extends WordSpec with Matchers {
         eval(10 - n) shouldEqual 0d
       }
     }
+    "toString" should {
+      "convert correct" in {
+        (Variable("x") - Sin(Constant("c"))).toString shouldEqual Variable("x").toString + "-" + Sin(Constant("c")).toString
+      }
+    }
   }
 }

@@ -6,8 +6,8 @@ import Expr._
 /**
   * Created by true on 21/10/2016.
   */
-class AddSpec extends WordSpec with Matchers {
-  "Add" when {
+class SumSpec extends WordSpec with Matchers {
+  "Sum" when {
     "0 + 0" should {
       "be 0" in {
         eval(Number(0) + Number(0)) shouldEqual 0d
@@ -43,6 +43,11 @@ class AddSpec extends WordSpec with Matchers {
         val n = Number(10)
         eval(n + 10) shouldEqual 20d
         eval(10 + n) shouldEqual 20d
+      }
+    }
+    "toString" should {
+      "convert correct" in {
+        (Variable("x") + Sin(Constant("c"))).toString shouldEqual Variable("x").toString + "+" + Sin(Constant("c")).toString
       }
     }
   }
