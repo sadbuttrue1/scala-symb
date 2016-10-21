@@ -115,16 +115,5 @@ class NumberSpec extends WordSpec with Matchers {
         Number(10).toString shouldEqual "10.0"
       }
     }
-    "power" should {
-      "2^10 = 1024" in {
-        eval(Number(2) ^ Number(10)) shouldEqual 1024d
-      }
-      "2^0 = 1" in {
-        eval(Number(2) ^ 0) shouldEqual 1d
-      }
-      "0^0 = NaN" in {
-        eval(Number(0) ^ 0).isNaN shouldBe true
-      }
-    }
   }
 }
