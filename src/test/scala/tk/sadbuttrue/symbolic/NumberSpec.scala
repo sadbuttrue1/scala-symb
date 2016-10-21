@@ -9,18 +9,6 @@ import Expr.doubleToNumber
   */
 class NumberSpec extends WordSpec with Matchers {
   "Number" when {
-    "sub" should {
-      "9 - 1 = 8" in {
-        val n1 = Number(9)
-        val n2 = Number(1)
-        eval(n1 - n2) shouldEqual 8d
-      }
-      "not fail on ordinal numbers" in {
-        val n = Number(10)
-        eval(n - 10) shouldEqual 0d
-        eval(10 - n) shouldEqual 0d
-      }
-    }
     "multiply" should {
       "be 0 if multiply on 0" in {
         val n1 = Number(0)
