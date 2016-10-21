@@ -57,7 +57,7 @@ trait Expr {
     case (x, y) => Frac(x, y)
   }
 
-  def ^(that: Expr): Expr = (this, that) match {
+  def ^(that: Number): Expr = (this, that) match {
     case (Number(0), Number(0)) => Number(Double.NaN)
     case (x, Number(0)) => Number(1)
     case (x, Number(y)) => Power(x, y)

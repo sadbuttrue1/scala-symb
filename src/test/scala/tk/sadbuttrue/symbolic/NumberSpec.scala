@@ -20,6 +20,9 @@ class NumberSpec extends WordSpec with Matchers {
         eval(n + 10) shouldEqual 20d
         eval(10 + n) shouldEqual 20d
       }
+      "0 + 0 = 0" in {
+        eval(Number(0) + Number(0)) shouldEqual 0d
+      }
     }
     "sub" should {
       "9 - 1 = 8" in {
@@ -105,6 +108,22 @@ class NumberSpec extends WordSpec with Matchers {
         val n = Number(-10)
         eval(-n) shouldEqual 10
         eval(-(-n)) shouldEqual -10
+      }
+    }
+    "toString" should {
+      "convert correct" in {
+        Number(10).toString shouldEqual "10.0"
+      }
+    }
+    "power" should {
+      "2^10 = 1024" in {
+        eval(Number(2) ^ Number(10)) shouldEqual 1024d
+      }
+      "2^0 = 1" in {
+        eval(Number(2) ^ 0) shouldEqual 1d
+      }
+      "0^0 = NaN" in {
+        eval(Number(0) ^ 0).isNaN shouldBe true
       }
     }
   }
