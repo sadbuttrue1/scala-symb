@@ -71,18 +71,6 @@ class NumberSpec extends WordSpec with Matchers {
         eval(Number(10) derive Variable("x")) shouldEqual 0d
       }
     }
-    "negotiate" should {
-      "work with positive" in {
-        val n = Number(10)
-        eval(-n) shouldEqual -10
-        eval(-(-n)) shouldEqual 10
-      }
-      "work with negative" in {
-        val n = Number(-10)
-        eval(-n) shouldEqual 10
-        eval(-(-n)) shouldEqual -10
-      }
-    }
     "toString" should {
       "convert correct" in {
         Number(10).toString shouldEqual "10.0"
