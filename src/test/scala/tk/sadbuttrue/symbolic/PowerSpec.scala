@@ -18,6 +18,11 @@ class PowerSpec extends WordSpec with Matchers {
         eval(Number(2) ^ 0) shouldEqual 1d
       }
     }
+    "2 ^ 1" should {
+      "be 2" in {
+        Number(2) ^ Number(1) shouldEqual Number(2)
+      }
+    }
     "0 ^ 0" should {
       "be NaN" in {
         eval(Number(0) ^ 0).isNaN shouldBe true

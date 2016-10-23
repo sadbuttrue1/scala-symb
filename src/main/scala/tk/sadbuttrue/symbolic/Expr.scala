@@ -60,6 +60,7 @@ trait Expr {
   def ^(that: Number): Expr = (this, that) match {
     case (Number(0), Number(0)) => Number(Double.NaN)
     case (x, Number(0)) => Number(1)
+    case (x, Number(1)) => x
     case (x, Number(y)) => Power(x, y)
   }
 
