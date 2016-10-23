@@ -1,1 +1,1 @@
-![travis-ci status](https://travis-ci.org/sadbuttrue1/scala-symb.svg?branch=master)
+![travis-ci status](https://travis-ci.org/sadbuttrue1/scala-symb.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/sadbuttrue1/scala-symb/badge.svg?branch=master)](https://coveralls.io/github/sadbuttrue1/scala-symb?branch=master)
